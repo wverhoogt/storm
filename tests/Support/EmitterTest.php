@@ -141,7 +141,7 @@ class EmitterTest extends TestCase
         });
         $dispatcher->fireEvent('test.test');
         $this->assertFalse($magic_value);
-        $dispatcher->fireEvent(new EventTest);
+        $dispatcher->fireEvent(new EventTest('EmitterTest'));
         $this->assertTrue($magic_value);
     }
 
@@ -157,7 +157,7 @@ class EmitterTest extends TestCase
             $magic_value = 1;
         }, 2);
 
-        $dispatcher->fireEvent(new EventTest());
+        $dispatcher->fireEvent(new EventTest('EmitterTest'));
         $this->assertEquals(42, $magic_value);
     }
 
@@ -180,14 +180,14 @@ class EmitterTest extends TestCase
         // Test natural sorting without priority to the queued tasks to be queued.
         $dispatcher->bindEvent($mock_queued_closure_should_not_match);
         $dispatcher->bindEvent($mock_queued_closure_should_match);
-        $dispatcher->fireEvent(new EventTest());
+        $dispatcher->fireEvent(new EventTest('EmitterTest'));
         $this->assertEquals(42, $magic_value);
 
         // Test priority sorting for the queued tasks to be queued
         $magic_value = 0;
         $dispatcher->bindEvent($mock_queued_closure_should_match, 1);
         $dispatcher->bindEvent($mock_queued_closure_should_not_match, 2);
-        $dispatcher->fireEvent(new EventTest());
+        $dispatcher->fireEvent(new EventTest('EmitterTest'));
         $this->assertEquals(42, $magic_value);
     }
 
@@ -204,7 +204,7 @@ class EmitterTest extends TestCase
         $mock_queued_closure->method('resolve')->willReturn($mock_queued_closure->closure);
         $dispatcher = $this->traitObject;
         $dispatcher->bindEvent($mock_queued_closure);
-        $dispatcher->fireEvent(new EventTest());
+        $dispatcher->fireEvent(new EventTest('EmitterTest'));
         $this->assertTrue($magic_value);
     }
 
@@ -223,7 +223,7 @@ class EmitterTest extends TestCase
         $unserialized->fireEvent($test);
         $this->assertEquals($test, EmitterClass::$output);
 
-        $unserialized->fireEvent(new EventTest());
+        $unserialized->fireEvent(new EventTest('EmitterTest'));
         $this->assertEquals($test.$test, EmitterClass::$output);
     }
 

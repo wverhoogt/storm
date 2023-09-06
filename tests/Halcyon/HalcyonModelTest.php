@@ -388,11 +388,11 @@ ESC;
 
     protected function setValidatorOnModel()
     {
-        $translator = $this->getMockBuilder('Illuminate\Contracts\Translation\Translator')->setMethods([
+        $translator = $this->getMockBuilder('Illuminate\Contracts\Translation\Translator')->onlyMethods([
             'get',
             'choice',
-            'trans',
-            'transChoice',
+            // 'trans',
+            // 'transChoice',
             'setLocale',
             'getLocale'
         ])->getMock();

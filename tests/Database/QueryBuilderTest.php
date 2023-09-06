@@ -105,7 +105,7 @@ class QueryBuilderTest extends TestCase
             ->disableOriginalClone()
             ->disableArgumentCloning()
             ->disallowMockingUnknownTypes()
-            ->setMethods([
+            ->onlyMethods([
                 'table',
                 'raw',
                 'selectOne',
@@ -125,12 +125,10 @@ class QueryBuilderTest extends TestCase
                 'transactionLevel',
                 'pretend',
                 'getDatabaseName',
-                'getConfig',
             ])
             ->getMock();
 
         $connection->method('getDatabaseName')->willReturn('database');
-        $connection->method('getConfig')->with('use_upsert_alias')->willReturn(false);
 
         return $connection;
     }

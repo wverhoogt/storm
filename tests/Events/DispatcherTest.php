@@ -15,7 +15,6 @@ use TestCase;
 
 class DispatcherTest extends TestCase
 {
-
     public function setUp(): void
     {
         include_once __DIR__.'/../fixtures/events/EventTest.php';
@@ -52,7 +51,7 @@ class DispatcherTest extends TestCase
         });
         $dispatcher->dispatch('test.test');
         $this->assertFalse($magic_value);
-        $dispatcher->dispatch(new EventTest);
+        $dispatcher->dispatch(new EventTest('DispatcherTest'));
         $this->assertTrue($magic_value);
     }
 
@@ -110,7 +109,7 @@ class DispatcherTest extends TestCase
             $magic_value = 1;
         }, 2);
 
-        $dispatcher->dispatch(new EventTest());
+        $dispatcher->dispatch(new EventTest('DispatcherTest'));
         $this->assertEquals(42, $magic_value);
     }
 
@@ -133,14 +132,14 @@ class DispatcherTest extends TestCase
         // Test natural sorting without priority to the queued tasks to be queued.
         $dispatcher->listen($mock_queued_closure_should_not_match);
         $dispatcher->listen($mock_queued_closure_should_match);
-        $dispatcher->dispatch(new EventTest());
+        $dispatcher->dispatch(new EventTest('DispatcherTest'));
         $this->assertEquals(42, $magic_value);
 
         // Test priority sorting for the queued tasks to be queued
         $magic_value = 0;
         $dispatcher->listen($mock_queued_closure_should_match, 1);
         $dispatcher->listen($mock_queued_closure_should_not_match, 2);
-        $dispatcher->dispatch(new EventTest());
+        $dispatcher->dispatch(new EventTest('DispatcherTest'));
         $this->assertEquals(42, $magic_value);
     }
 
@@ -157,7 +156,7 @@ class DispatcherTest extends TestCase
         $mock_queued_closure->method('resolve')->willReturn($mock_queued_closure->closure);
         $dispatcher = new Dispatcher();
         $dispatcher->listen($mock_queued_closure);
-        $dispatcher->dispatch(new EventTest());
+        $dispatcher->dispatch(new EventTest('DispatcherTest'));
         $this->assertTrue($magic_value);
     }
 
